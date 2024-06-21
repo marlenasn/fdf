@@ -9,6 +9,22 @@ void	swap(t_Vec *a, t_Vec *b)
 	*a = tmp;
 }
 
+void	free_2d_array(int **array) 
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+            free(array[i++]);
+        free(array);
+}
+
+void	free_board(t_Board board) 
+{
+	free_2d_array(board.array);
+	free_2d_array(board.colors);
+}
+
 void	draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color)
 {
 	double	y;
@@ -243,4 +259,5 @@ int	main(int argc, char **argv)
 	mlx_key_hook(m.mlx_win, handle_key, NULL);
 	mlx_hook(m.mlx_win, 17, 0, handle_closing, NULL);
 	mlx_loop(m.mlx);
+	free_board(board);
 }
