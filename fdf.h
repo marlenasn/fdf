@@ -47,6 +47,11 @@ typedef struct t_Drawing
 	t_Vec	max;
 }	t_Drawing;
 
-t_Board	parse_to_array(int argc, char **argv, int fd);
+typedef struct t_Mlx {
+        void *mlx;
+        void *mlx_win;
+} t_Mlx;
+
+t_Board	parse_to_array(char **argv, int fd);
 
 #endif

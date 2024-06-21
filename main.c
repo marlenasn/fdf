@@ -1,19 +1,6 @@
 #include "fdf.h"
-/*
-int	close_window(t_env *env)
-{
-	mlx_destroy_window(env->mlx, env->win);
-	exit(0);
-}
 
-int	key_handler(int keycode, t_env *env)
-{
-	if (keycode == 53)
-		close_window(env);
-}
-*/
-
-void swap(t_Vec *a, t_Vec *b)
+void	swap(t_Vec *a, t_Vec *b)
 {
 	t_Vec	tmp;
 
@@ -22,16 +9,11 @@ void swap(t_Vec *a, t_Vec *b)
 	*a = tmp;
 }
 
-typedef struct t_Mlx {
-	void *mlx;
-	void *mlx_win;
-} t_Mlx;
-
-void draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color)
+void	draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color)
 {
-	double y;
-	double dy;
-	double x;
+	double	y;
+	double	dy;
+	double	x;
 
 	if (start.x > end.x)
 		swap(&start, &end);
@@ -46,11 +28,11 @@ void draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color)
 	}
 }
 
-void draw_line_y(t_Mlx m, t_Vec start, t_Vec end, int color)
+void	draw_line_y(t_Mlx m, t_Vec start, t_Vec end, int color)
 {
-	double x;
-	double dx;
-	double y;
+	double	x;
+	double	dx;
+	double	y;
 
 	if (start.y > end.y)
 		swap(&start, &end);
@@ -65,9 +47,17 @@ void draw_line_y(t_Mlx m, t_Vec start, t_Vec end, int color)
 	}
 }
 
+float my_abs(float a)
+{
+	if (a > 0)
+		return a;
+	else
+		return -a;
+}
+
 void	draw_line(t_Mlx m, t_Vec start, t_Vec end, int color)
 {
-	if (abs(end.x - start.x) > abs(end.y - start.y))
+	if (my_abs(end.x - start.x) > my_abs(end.y - start.y))
 		draw_line_x(m, start, end, color);
 	else
 		draw_line_y(m, start, end, color);
@@ -82,7 +72,6 @@ t_Vec	get_current_point(t_Vectors t_Vectors, t_Board t_Board, int i, int j)
 		i = 0;
 	if (j < 0)
 		j = 0;
-
 	current = t_Vectors.start;
 	current = vec_add(current, vec_mul(t_Vectors.next_row, i));
 	current = vec_add(current, vec_mul(t_Vectors.next_column, j));
@@ -91,7 +80,7 @@ t_Vec	get_current_point(t_Vectors t_Vectors, t_Board t_Board, int i, int j)
 	return (current);
 }
 
-t_Drawing get_drawing_min_max(t_Drawing drawing, t_Vec current)
+t_Drawing	get_drawing_min_max(t_Drawing drawing, t_Vec current)
 {
 	if (current.x < drawing.min.x)
 		drawing.min.x = current.x;
@@ -133,7 +122,7 @@ t_Drawing	get_drawing_size(t_Board t_Board, t_Vectors t_Vectors)
 	return (drawing);
 }
 
-void draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
+void	draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
 {
 	int	i;
 	int	j;
@@ -158,9 +147,9 @@ void draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
 	}
 }
 
-t_Board get_board_or_error(int argc, char **argv)
+t_Board	get_board_or_error(int argc, char **argv)
 {
-	int fd;
+	int	fd;
 
 	if (argc != 2)
 	{
@@ -173,15 +162,14 @@ t_Board get_board_or_error(int argc, char **argv)
 		write(1, "Failed to open file\n", 21);
 		exit(1);
 	}
-
-	return (parse_to_array(argc, argv, fd));
+	return (parse_to_array(argv, fd));
 }
 
-t_Vectors init_vectors(void)
+t_Vectors	init_vectors(void)
 {
 	float	vector_scale;
 	float	sqrt_3_over_2;
-	t_Vectors vectors;
+	t_Vectors	vectors;
 
 	vector_scale = 10.0f;
 	sqrt_3_over_2 = 0.5f;
@@ -196,7 +184,7 @@ t_Vectors init_vectors(void)
 	return (vectors);
 }
 
-t_Vectors recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
+t_Vectors	recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
 {
 	float	ratio;
 	float	ratio_w;
@@ -225,6 +213,7 @@ t_Vectors recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
 
 int	handle_key(int keycode, void *param)
 {
+	(void)param;
 	if (keycode == ESC_KEY || keycode == ESC_KEY_LINUX)
 		exit(0);
 	return (0);
@@ -232,6 +221,7 @@ int	handle_key(int keycode, void *param)
 
 int	handle_closing(void *param)
 {
+	(void)param;
 	exit(0);
 	return (0);
 }
@@ -241,7 +231,7 @@ int	main(int argc, char **argv)
 	t_Board	board;
 	t_Vectors	vectors;
 	t_Drawing	drawing;
-	t_Mlx m;
+	t_Mlx	m;
 
 	board = get_board_or_error(argc, argv);
 	vectors = init_vectors();

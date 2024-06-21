@@ -125,8 +125,10 @@ t_Vec	vec_mul(t_Vec v, float factor)
 	return (result);
 }
 
-t_Board init_board(char **argv, t_Board board)
+t_Board	init_board(char **argv)
 {
+	t_Board board;
+
 	board.nbr_of_rows = get_nbr_of_rows(argv[1]);
 	board.nbr_of_cols = 0;
 	board.array = (int **)malloc(board.nbr_of_rows * sizeof(int *));
@@ -142,7 +144,7 @@ int	get_color(char *color_element)
 		return (0xffffff);
 }
 
-t_Board	parse_to_array(int argc, char **argv, int fd)
+t_Board	parse_to_array(char **argv, int fd)
 {
 	char	**tmp;
 	char	**element;
@@ -151,11 +153,11 @@ t_Board	parse_to_array(int argc, char **argv, int fd)
 	t_Board	board;
 
 	i = 0;
-	board = init_board(argv, board);
+	board = init_board(argv);
 	while (i < board.nbr_of_rows)
 	{
 		j = 0;
-		tmp = ft_split(get_next_line(fd), ' ');	
+		tmp = ft_split(get_next_line(fd), ' ');
 		if (board.nbr_of_cols == 0)
 			board.nbr_of_cols = array_length(tmp);
 		board.array[i] = (int *)malloc(board.nbr_of_cols * sizeof(int));
