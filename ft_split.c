@@ -91,5 +91,6 @@ char	**ft_split(const char *str, char c)
 		ft_strlcpy(final_array[j++], str + last_i, i - last_i + 1);
 	}
 	final_array[j] = NULL;
+	free((void*)str);
 	return (final_array);
 }

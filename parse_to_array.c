@@ -69,6 +69,7 @@ int	get_nbr_of_rows(char *file)
 {
 	int	nbr;
 	int	fd;
+	char	*line;
 
 	nbr = 0;
 	fd = open(file, O_RDONLY);
@@ -79,8 +80,10 @@ int	get_nbr_of_rows(char *file)
 	}
 	while (1)
 	{
-		if (!get_next_line(fd))
+		line = get_next_line(fd);
+		if (!line)
 			return (nbr);
+		free(line);
 		nbr++;
 	}
 	return (nbr);
@@ -167,7 +170,11 @@ t_Board	parse_to_array(char **argv, int fd)
 			element = ft_split(tmp[j], ',');
 			board.array[i][j] = ft_atoi(element[0]);
 			board.colors[i][j++] = get_color(element[1]);
+			free(element[0]);
+			free(element[1]);
+			free(element);
 		}
+		free(tmp);
 		i++;
 	}
 	return (board);
