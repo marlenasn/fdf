@@ -1,88 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mwiecek <mwiecek@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/21 16:35:06 by mwiecek           #+#    #+#             */
+/*   Updated: 2024/06/21 16:57:02 by mwiecek          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+#include "libft.h"
 #include "fdf.h"
-
-void	swap(t_Vec *a, t_Vec *b)
-{
-	t_Vec	tmp;
-
-	tmp = *b;
-	*b = *a;
-	*a = tmp;
-}
-
-void	free_2d_array(int **array) 
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-            free(array[i++]);
-        free(array);
-}
-
-void	free_board(t_Board board) 
-{
-	free_2d_array(board.array);
-	free_2d_array(board.colors);
-}
-
-void	draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color)
-{
-	double	y;
-	double	dy;
-	double	x;
-
-	if (start.x > end.x)
-		swap(&start, &end);
-	y = start.y;
-	dy = (double)(end.y - start.y) / (double)(end.x - start.x);
-	x = start.x;
-	while (x <= end.x)
-	{
-		mlx_pixel_put(m.mlx, m.mlx_win, (int)(x + 0.5), (int)(y + 0.5), color);
-		y += dy;
-		++x;
-	}
-}
-
-void	draw_line_y(t_Mlx m, t_Vec start, t_Vec end, int color)
-{
-	double	x;
-	double	dx;
-	double	y;
-
-	if (start.y > end.y)
-		swap(&start, &end);
-	x = start.x;
-	dx = (double)(end.x - start.x) / (double)(end.y - start.y);
-	y = start.y;
-	while (y <= end.y)
-	{
-		mlx_pixel_put(m.mlx, m.mlx_win, (int)(x + 0.5), (int)(y + 0.5), color);
-		x += dx;
-		++y;
-	}
-}
-
-float my_abs(float a)
-{
-	if (a > 0)
-		return a;
-	else
-		return -a;
-}
-
-void	draw_line(t_Mlx m, t_Vec start, t_Vec end, int color)
-{
-	if (my_abs(end.x - start.x) > my_abs(end.y - start.y))
-		draw_line_x(m, start, end, color);
-	else
-		draw_line_y(m, start, end, color);
-}
 
 t_Vec	get_current_point(t_Vectors t_Vectors, t_Board t_Board, int i, int j)
 {
 	t_Vec	current;
-	int	height;
+	int		height;
 
 	if (i < 0)
 		i = 0;
@@ -94,73 +29,6 @@ t_Vec	get_current_point(t_Vectors t_Vectors, t_Board t_Board, int i, int j)
 	height = t_Board.array[i][j];
 	current = vec_add(current, vec_mul(t_Vectors.up, height));
 	return (current);
-}
-
-t_Drawing	get_drawing_min_max(t_Drawing drawing, t_Vec current)
-{
-	if (current.x < drawing.min.x)
-		drawing.min.x = current.x;
-	if (current.y < drawing.min.y)
-		drawing.min.y = current.y;
-	if (current.x > drawing.max.x)
-		drawing.max.x = current.x;
-	if (current.y > drawing.max.y)
-		drawing.max.y = current.y;
-	return (drawing);
-}
-
-t_Drawing	get_drawing_size(t_Board t_Board, t_Vectors t_Vectors)
-{
-	int	i;
-	int	j;
-	t_Drawing	drawing;
-	t_Vec	current;
-
-	drawing.min.x = +1000000.0f;
-	drawing.max.x = -1000000.0f;
-	drawing.min.y = +1000000.0f;
-	drawing.max.y = -1000000.0f;
-	i = 0;
-	while (i < t_Board.nbr_of_rows)
-	{
-		j = 0;
-		while (j < t_Board.nbr_of_cols)
-		{
-			current = get_current_point(t_Vectors, t_Board, i, j++);
-			drawing = get_drawing_min_max(drawing, current);
-		}
-		++i;
-	}
-	drawing.size.x = drawing.max.x - drawing.min.x;
-	drawing.size.y = drawing.max.y - drawing.min.y;
-	drawing.center.x = (drawing.max.x + drawing.min.x) * 0.5;
-	drawing.center.y = (drawing.max.y + drawing.min.y) * 0.5;
-	return (drawing);
-}
-
-void	draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
-{
-	int	i;
-	int	j;
-	t_Vec	current;
-	t_Vec	above;
-	t_Vec	to_the_left;
-
-	i = 0;
-	while (i < board.nbr_of_rows)
-	{
-		j = 0;
-		while (j < board.nbr_of_cols)
-		{
-			current = get_current_point(vectors, board, i, j);
-			above = get_current_point(vectors, board, i - 1, j);
-			draw_line(m, above, current, board.colors[i][j]);
-			to_the_left = get_current_point(vectors, board, i, j - 1);
-			draw_line(m, to_the_left, current, board.colors[i][j]);
-			++j;
-		}
-		++i;
-	}
 }
 
 t_Board	get_board_or_error(int argc, char **argv)
@@ -179,25 +47,6 @@ t_Board	get_board_or_error(int argc, char **argv)
 		exit(1);
 	}
 	return (parse_to_array(argv, fd));
-}
-
-t_Vectors	init_vectors(void)
-{
-	float	vector_scale;
-	float	sqrt_3_over_2;
-	t_Vectors	vectors;
-
-	vector_scale = 10.0f;
-	sqrt_3_over_2 = 0.5f;
-	vectors.start.x = 0;
-	vectors.start.y = 0;
-	vectors.next_column.x = vector_scale;
-	vectors.next_column.y = -vector_scale * sqrt_3_over_2;
-	vectors.next_row.x = vector_scale;
-	vectors.next_row.y = vector_scale * sqrt_3_over_2;
-	vectors.up.x = 0;
-	vectors.up.y = -vector_scale;
-	return (vectors);
 }
 
 t_Vectors	recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
@@ -227,27 +76,37 @@ t_Vectors	recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
 	return (vectors);
 }
 
-int	handle_key(int keycode, void *param)
+void	draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
 {
-	(void)param;
-	if (keycode == ESC_KEY || keycode == ESC_KEY_LINUX)
-		exit(0);
-	return (0);
-}
+	int		i;
+	int		j;
+	t_Vec	current;
+	t_Vec	above;
+	t_Vec	to_the_left;
 
-int	handle_closing(void *param)
-{
-	(void)param;
-	exit(0);
-	return (0);
+	i = 0;
+	while (i < board.nbr_of_rows)
+	{
+		j = 0;
+		while (j < board.nbr_of_cols)
+		{
+			current = get_current_point(vectors, board, i, j);
+			above = get_current_point(vectors, board, i - 1, j);
+			draw_line(m, above, current, board.colors[i][j]);
+			to_the_left = get_current_point(vectors, board, i, j - 1);
+			draw_line(m, to_the_left, current, board.colors[i][j]);
+			++j;
+		}
+		++i;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	t_Board	board;
+	t_Board		board;
 	t_Vectors	vectors;
 	t_Drawing	drawing;
-	t_Mlx	m;
+	t_Mlx		m;
 
 	board = get_board_or_error(argc, argv);
 	vectors = init_vectors();

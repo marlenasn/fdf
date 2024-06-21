@@ -14,17 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-/*
-static int	word(char chr, char c)
-{
-	if (chr && chr != c)
-		return (1);
-	else
-		return (0);
-}
-*/
-
 static int	str_len(const char *str)
 {
 	int	i;
@@ -91,6 +80,6 @@ char	**ft_split(const char *str, char c)
 		ft_strlcpy(final_array[j++], str + last_i, i - last_i + 1);
 	}
 	final_array[j] = NULL;
-	free((void*)str);
+	free((void *)str);
 	return (final_array);
 }
