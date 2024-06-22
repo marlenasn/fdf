@@ -41,7 +41,7 @@ typedef struct t_Vect
 	t_Vec	next_row;
 	t_Vec	up;
 	t_Vec	window;
-}	t_Vectors;
+}	t_Vect;
 
 typedef struct t_Board
 {
@@ -57,7 +57,7 @@ typedef struct t_Draw
 	t_Vec	size;
 	t_Vec	min;
 	t_Vec	max;
-}	t_Drawing;
+}	t_Draw;
 
 typedef struct t_Mlx
 {
@@ -68,14 +68,14 @@ typedef struct t_Mlx
 t_Board	parse_to_array(char **argv, int fd);
 int		ft_atoi(const char *str);
 int		hexatoi(const char *str);
-void	*ft_free(char **element);
+void	ft_free(char **element);
 int		handle_key(int keycode, void *param);
 int		handle_closing(void *param);
 void	draw_line_x(t_Mlx m, t_Vec start, t_Vec end, int color);
 void	draw_line_y(t_Mlx m, t_Vec start, t_Vec end, int color);
 void	draw_line(t_Mlx m, t_Vec start, t_Vec end, int color);
-t_Draw	get_drawing_min_max(t_Drawing drawing, t_Vec current);
-t_Draw	get_drawing_size(t_Board t_Board, t_Vectors t_Vectors);
+t_Draw	get_drawing_min_max(t_Draw drawing, t_Vec current);
+t_Draw	get_drawing_size(t_Board t_Board, t_Vect t_Vectors);
 void	swap(t_Vec *a, t_Vec *b);
 void	free_2d_array(int **array);
 void	free_board(t_Board board);
@@ -84,4 +84,6 @@ t_Vect	init_vectors(void);
 t_Vec	vec_mul(t_Vec v, float factor);
 t_Vec	vec_sub(t_Vec v1, t_Vec v2);
 t_Vec	vec_add(t_Vec v1, t_Vec v2);
+t_Vec	get_current_point(t_Vect t_Vectors, t_Board t_Board, int i, int j);
+int	array_length(char **ptr);
 #endif

@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "fdf.h"
 
-t_Vec	get_current_point(t_Vectors t_Vectors, t_Board t_Board, int i, int j)
+t_Vec	get_current_point(t_Vect t_Vectors, t_Board t_Board, int i, int j)
 {
 	t_Vec	current;
 	int		height;
@@ -49,7 +49,7 @@ t_Board	get_board_or_error(int argc, char **argv)
 	return (parse_to_array(argv, fd));
 }
 
-t_Vectors	recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
+t_Vect	recalculate_vectors(t_Vect vectors, t_Draw drawing)
 {
 	float	ratio;
 	float	ratio_w;
@@ -76,7 +76,7 @@ t_Vectors	recalculate_vectors(t_Vectors vectors, t_Drawing drawing)
 	return (vectors);
 }
 
-void	draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
+void	draw_board(t_Mlx m, t_Board board, t_Vect vectors)
 {
 	int		i;
 	int		j;
@@ -104,8 +104,8 @@ void	draw_board(t_Mlx m, t_Board board, t_Vectors vectors)
 int	main(int argc, char **argv)
 {
 	t_Board		board;
-	t_Vectors	vectors;
-	t_Drawing	drawing;
+	t_Vect		vectors;
+	t_Draw		drawing;
 	t_Mlx		m;
 
 	board = get_board_or_error(argc, argv);

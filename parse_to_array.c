@@ -38,18 +38,6 @@ int	get_nbr_of_rows(char *file)
 	return (nbr);
 }
 
-int	array_length(char **ptr)
-{
-	int	i;
-
-	i = 0;
-	while (ptr[i])
-	{
-		++i;
-	}
-	return (i);
-}
-
 t_Board	init_board(char **argv)
 {
 	t_Board	board;
@@ -69,6 +57,14 @@ int	get_color(char *color_element)
 		return (0xffffff);
 }
 
+void	setup_board(t_Board *board, int i, char **tmp)
+{
+	if (board->nbr_of_cols == 0)
+		board->nbr_of_cols = array_length(tmp);
+	board->array[i] = (int *)malloc(board->nbr_of_cols * sizeof(int));
+	board->colors[i] = (int *)malloc(board->nbr_of_cols * sizeof(int));
+}
+
 t_Board	parse_to_array(char **argv, int fd)
 {
 	char	**tmp;
@@ -83,10 +79,7 @@ t_Board	parse_to_array(char **argv, int fd)
 	{
 		j = 0;
 		tmp = ft_split(get_next_line(fd), ' ');
-		if (board.nbr_of_cols == 0)
-			board.nbr_of_cols = array_length(tmp);
-		board.array[i] = (int *)malloc(board.nbr_of_cols * sizeof(int));
-		board.colors[i] = (int *)malloc(board.nbr_of_cols * sizeof(int));
+		setup_board(&board, i, tmp);
 		while (j < board.nbr_of_cols)
 		{
 			element = ft_split(tmp[j], ',');

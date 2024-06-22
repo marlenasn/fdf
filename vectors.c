@@ -41,11 +41,11 @@ t_Vec	vec_mul(t_Vec v, float factor)
 	return (result);
 }
 
-t_Vectors	init_vectors(void)
+t_Vect	init_vectors(void)
 {
-	float		vector_scale;
-	float		sqrt_3_over_2;
-	t_Vectors	vectors;
+	float	vector_scale;
+	float	sqrt_3_over_2;
+	t_Vect	vectors;
 
 	vector_scale = 10.0f;
 	sqrt_3_over_2 = 0.5f;

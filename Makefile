@@ -7,7 +7,7 @@ RM				= rm -f
 
 # Source Files
 SOURCES =\
-	ft_strlcpy.c ft_split.c get_next_line_utils.c get_next_line.c parse_to_array.c main.c 
+	ft_strlcpy.c ft_split.c get_next_line_utils.c get_next_line.c parse_to_array.c main.c atoi.c close.c drawing.c fdf_utils.c vectors.c
 
 
 OBJECTS = $(SOURCES:.c=.o)

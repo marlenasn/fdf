@@ -77,7 +77,7 @@ int	hexatoi(const char *str)
 	return (a);
 }
 
-void	*ft_free(char **element)
+void	ft_free(char **element)
 {
 	free(element[0]);
 	free(element[1]);

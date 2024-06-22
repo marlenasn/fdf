@@ -46,3 +46,15 @@ float	my_abs(float a)
 	else
 		return (-a);
 }
+
+int	array_length(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		++i;
+	}
+	return (i);
+}

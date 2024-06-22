@@ -60,7 +60,7 @@ void	draw_line(t_Mlx m, t_Vec start, t_Vec end, int color)
 		draw_line_y(m, start, end, color);
 }
 
-t_Drawing	get_drawing_min_max(t_Drawing drawing, t_Vec current)
+t_Draw	get_drawing_min_max(t_Draw drawing, t_Vec current)
 {
 	if (current.x < drawing.min.x)
 		drawing.min.x = current.x;
@@ -73,12 +73,12 @@ t_Drawing	get_drawing_min_max(t_Drawing drawing, t_Vec current)
 	return (drawing);
 }
 
-t_Drawing	get_drawing_size(t_Board t_Board, t_Vectors t_Vectors)
+t_Draw	get_drawing_size(t_Board t_Board, t_Vect t_Vectors)
 {
-	int			i;
-	int			j;
-	t_Drawing	drawing;
-	t_Vec		current;
+	int		i;
+	int		j;
+	t_Draw	drawing;
+	t_Vec	current;
 
 	drawing.min.x = +1000000.0f;
 	drawing.max.x = -1000000.0f;
